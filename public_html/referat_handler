@@ -1,0 +1,41 @@
+session_start();
+require_once 'includes/db.php';
+
+// Załaduj prefix z configu
+$config = include 'includes/config.php';
+$prefix = $config['prefix'];
+
+if (!isset($_SESSION['user_id']) || $_SESSION['rola_id'] != 1) {
+    header("Location: login.php");
+    exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $tytul = $_POST['tytul'] ?? '';
+    $streszczenie = $_POST['abstrakt'] ?? '';
+    $uczestnik_id = $_SESSION['user_id'];
+    $plik_nazwa = null;
+
+    // Obsługa pliku PDF
+    if (!empty($_FILES['plik']['name']) && $_FILES['plik']['error'] === UPLOAD_ERR_OK) {
+        $rozszerzenie = strtolower(pathinfo($_FILES['plik']['name'], PATHINFO_EXTENSION));
+        if ($rozszerzenie === 'pdf') {
+            $unikalna_nazwa = time() . '_' . basename($_FILES['plik']['name']);
+            $sciezka_docelowa = 'pliki_referatow/' . $unikalna_nazwa;
+            if (move_uploaded_file($_FILES['plik']['tmp_name'], $sciezka_docelowa)) {
+                $plik_nazwa = $unikalna_nazwa;
+            }
+        }
+    }
+
+    // Zapis do bazy danych z prefixem
+    $stmt = $pdo->prepare("INSERT INTO `{$prefix}referaty` (tytul, streszczenie, plik, uczestnik_id, data_zgloszenia, status) 
+                           VALUES (?, ?, ?, ?, NOW(), 'oczekujący')");
+    $stmt->execute([$tytul, $streszczenie, $plik_nazwa, $uczestnik_id]);
+
+    header("Location: uzytkownik_dashboard.php?msg=referat_zgloszony");
+    exit;
+} else {
+    header("Location: zglos_referat.php");
+    exit;
+}
