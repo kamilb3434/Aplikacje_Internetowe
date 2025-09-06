@@ -1,8 +1,8 @@
 <?php
 return [
 'host' => 'localhost',
-'dbname' => 'serwiskonf',
+'dbname' => 'serwis',
 'user' => 'root',
 'pass' => '',
-'prefix' => 'bomba_'
+'prefix' => 'konf'
 ];

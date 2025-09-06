@@ -56,15 +56,6 @@ switch ($_GET['step']) {
 
         $prefix = $config['prefix'];
         include 'sql/insert.php';
-
-        /*foreach ($insert as $q) {
-            $q = "INSERT IGNORE INTO `{$prefix}uzytkownik` 
-            (`imie`, `nazwisko`, `email`, `haslo`, `rola_id`) 
-            VALUES ('Admin', 'Główny', '$email', '$hashed', 2)";
-        } */
-
-        include 'sql/insert.php';
-
         header("Location: install.php?step=5");
         break;
 

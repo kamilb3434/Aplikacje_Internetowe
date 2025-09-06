@@ -4,7 +4,7 @@ session_start();
 require_once '../includes/db.php';
 
 // Załaduj prefix
-$config = include '../install/config/config.php';
+$config = include '../includes/config.php';
 $prefix = $config['prefix'];
 
 if (!isset($_SESSION['user_id']) || $_SESSION['rola_id'] != 2) {

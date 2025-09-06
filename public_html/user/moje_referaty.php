@@ -1,24 +1,28 @@
 <?php
 session_start();
-require_once '../includes/db.php';
+require_once __DIR__ . '/../includes/db.php';
 
-if (!isset($_SESSION['user_id']) || $_SESSION['rola_id'] != 1) {
+if (!isset($_SESSION['user_id']) || (int)$_SESSION['rola_id'] !== 1) {
     header("Location: ../login.php");
     exit;
 }
 
-// Załaduj prefix z konfiguracji
-$config = include '../includes/config.php';
+// Prefix z konfiguracji
+$config = include __DIR__ . '/../includes/config.php';
 $prefix = $config['prefix'];
 
-$uczestnik_id = $_SESSION['user_id'];
+$uczestnik_id = (int)$_SESSION['user_id'];
 
-$stmt = $pdo->prepare("SELECT tytul, streszczenie, plik, data_zgloszenia, status FROM `{$prefix}referaty` WHERE uczestnik_id = ?");
+// ⬅️ MUSI być id w SELECT, bo używasz go w linkach
+$stmt = $pdo->prepare("
+    SELECT id, tytul, plik, data_zgloszenia, status
+    FROM `{$prefix}referaty`
+    WHERE uczestnik_id = ?
+    ORDER BY data_zgloszenia DESC
+");
 $stmt->execute([$uczestnik_id]);
-$referaty = $stmt->fetchAll();
-
+$referaty = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
-
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -43,37 +47,42 @@ $referaty = $stmt->fetchAll();
     <?php else: ?>
         <table class="table table-bordered">
             <thead>
-                <tr>
-                    <th>Tytuł</th>
-                    <th>Data zgłoszenia</th>
-                    <th>Status</th>
-                    <th>Plik</th>
-                </tr>
+            <tr>
+                <th>Tytuł</th>
+                <th>Data zgłoszenia</th>
+                <th>Status</th>
+                <th>Plik</th>
+            </tr>
             </thead>
             <tbody>
-                <?php foreach ($referaty as $r): ?>
-                    <tr>
-                        <td><?= htmlspecialchars($r['tytul']) ?></td>
-                        <td><?= $r['data_zgloszenia'] ?></td>
-                        <td>
-                            <?php
-                                $kolor = match($r['status']) {
-                                    'zaakceptowany' => 'success',
-                                    'odrzucony' => 'danger',
-                                    default => 'secondary'
-                                };
-                            ?>
-                            <span class="badge bg-<?= $kolor ?>"><?= $r['status'] ?></span>
-                        </td>
-                        <td>
-                            <?php if ($r['plik']): ?>
-                                <a href="../pliki/<?= htmlspecialchars($r['plik']) ?>" target="_blank">Pobierz</a>
-                            <?php else: ?>
-                                Brak
-                            <?php endif; ?>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
+            <?php foreach ($referaty as $r): ?>
+                <tr>
+                    <td><?= htmlspecialchars($r['tytul']) ?></td>
+                    <td><?= htmlspecialchars($r['data_zgloszenia']) ?></td>
+                    <td>
+                        <?php
+                        // Wymaga PHP 8+
+                        $kolor = match ($r['status']) {
+                            'zaakceptowany' => 'success',
+                            'odrzucony'     => 'danger',
+                            default         => 'secondary'
+                        };
+                        ?>
+                        <span class="badge bg-<?= $kolor ?>"><?= htmlspecialchars($r['status']) ?></span>
+                    </td>
+                    <td>
+                        <?php if (!empty($r['plik'])): ?>
+                            <!-- Otwórz w nowej karcie -->
+                            <a href="/download_referat.php?id=<?= (int)$r['id'] ?>" target="_blank" rel="noopener">Otwórz</a>
+                            &nbsp;|&nbsp;
+                            <!-- Wymuś pobranie -->
+                            <a href="/download_referat.php?id=<?= (int)$r['id'] ?>&dl=1">Pobierz</a>
+                        <?php else: ?>
+                            Brak
+                        <?php endif; ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
             </tbody>
         </table>
     <?php endif; ?>

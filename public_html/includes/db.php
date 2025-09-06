@@ -1,5 +1,5 @@
 <?php
-$config = include __DIR__ . '/../install/config/config.php';
+$config = include __DIR__ . '/config.php';
 
 $host = $config['host'];
 $db   = $config['dbname'];

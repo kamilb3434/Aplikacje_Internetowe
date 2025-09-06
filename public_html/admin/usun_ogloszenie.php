@@ -1,38 +1,23 @@
 <?php
 session_start();
-require_once '../includes/db.php';
+if (!isset($_SESSION['user_id']) || (int)$_SESSION['rola_id'] !== 2) { header("Location: ../login.php"); exit; }
 
-// Wczytaj prefix z configu
-$installerConfig = include '../install/config/config.php';
-$prefix = $installerConfig['prefix'];
+$config = include __DIR__ . '/../includes/config.php';
+$prefix = $config['prefix'];
+require_once __DIR__ . '/../includes/db.php';
 
-if (!isset($_SESSION['user_id']) || $_SESSION['rola_id'] != 2) {
-    header("Location: ../login.php");
-    exit;
-}
+$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+if ($id <= 0) { header('Location: ogloszenia.php?err=badid'); exit; }
 
-if (!isset($_GET['id'])) {
-    header("Location: ogloszenia.php");
-    exit;
-}
-
-$id = (int) $_GET['id'];
-
-// Pobierz plik do usunięcia (jeśli istnieje)
-$stmt = $pdo->prepare("SELECT plik FROM `{$prefix}ogloszenie` WHERE id = ?");
+$stmt = $pdo->prepare("SELECT plik FROM `{$prefix}ogloszenie` WHERE id = ? LIMIT 1");
 $stmt->execute([$id]);
-$ogloszenie = $stmt->fetch();
+$row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if ($ogloszenie) {
-    // Usuń plik z dysku, jeśli istnieje
-    if (!empty($ogloszenie['plik']) && file_exists('pliki/' . $ogloszenie['plik'])) {
-        unlink('pliki/' . $ogloszenie['plik']);
+if ($row) {
+    $pdo->prepare("DELETE FROM `{$prefix}ogloszenie` WHERE id = ?")->execute([$id]);
+    if (!empty($row['plik'])) {
+        $path = __DIR__ . '/../uploads/ogloszenia/' . basename($row['plik']);
+        if (is_file($path)) { @unlink($path); }
     }
-
-    // Usuń ogłoszenie z bazy
-    $stmt = $pdo->prepare("DELETE FROM `{$prefix}ogloszenie` WHERE id = ?");
-    $stmt->execute([$id]);
 }
-
-header("Location: ogloszenia.php");
-exit;
+header('Location: ogloszenia.php?deleted=1'); exit;

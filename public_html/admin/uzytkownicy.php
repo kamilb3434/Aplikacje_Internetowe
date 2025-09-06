@@ -8,7 +8,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['rola_id'] != 2) {
 }
 
 // Wczytaj konfigurację instalatora
-$config = include __DIR__ . '/../install/config/config.php';
+$config = include __DIR__ . '/../includes/config.php';
 $prefix = $config['prefix'];
 
 // Ustaw połączenie PDO zgodnie z danymi z konfiguracji
@@ -76,6 +76,9 @@ try {
         }
     </style>
 
+    <!-- (NOWE) SweetAlert2 theme dopasowany do Bootstrap 4 xq -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bootstrap-4/bootstrap-4.min.css">
+
 </head>
 
 <body id="page-top">
@@ -138,11 +141,6 @@ try {
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
-            <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
-
            
         </ul>
         <!-- End of Sidebar -->
@@ -166,116 +164,42 @@ try {
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
-                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                        <li class="nav-item dropdown no-arrow d-sm-none">
-                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-search fa-fw"></i>
-                            </a>
-                            <!-- Dropdown - Wiadomości -->
-                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                                aria-labelledby="searchDropdown">
-                                <form class="form-inline mr-auto w-100 navbar-search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small"
-                                            placeholder="Search for..." aria-label="Search"
-                                            aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button">
-                                                <i class="fas fa-search fa-sm"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </li>
+                    <div class="topbar-divider d-none d-sm-block"></div>
 
-                        <!-- Nav Item - Powiadomienia -->
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-bell fa-fw"></i>
-                                <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter">1</span>
-                            </a>
-                            <!-- Dropdown - Alerts -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="alertsDropdown">
-                                <h6 class="dropdown-header">
-                                    Powiaodmienia
-                                </h6>
-    
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-warning">
-                                            <i class="fas fa-exclamation-triangle text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">Czerwiec 22, 2025</div>
-                                        Admin Alert: Zalogowałeś się do panelu Administratora
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Pokaż więcej</a>
-                            </div>
-                        </li>
+                    
+                        
 
-                        <!-- Nav Item - Wiadomości -->
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-envelope fa-fw"></i>
-                                <!-- Counter - Messages -->
-                                <span class="badge badge-danger badge-counter">1</span>
-                            </a>
-                            <!-- Dropdown - Messages -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="messagesDropdown">
-                                <h6 class="dropdown-header">
-                                    Wiadomości
-                                </h6>
-                                </a>
-
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3 d-flex align-items-center justify-content-center">
-                                         <i class="fas fa-envelope fa-2x text-primary"></i>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">Witaj w panelu Administratora!</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Pokaż więcej</a>
-                            </div>
-                        </li>
-
-                        <div class="topbar-divider d-none d-sm-block"></div>
-
-                        <!-- Nav Item - User Information -->
+                        <!-- Nav Item - User Information xq-->
                         <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                                <?= $_SESSION['imie'] . ' ' . $_SESSION['nazwisko']; ?>
-                                </span>
+                          <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                              <?= htmlspecialchars($_SESSION['imie'] . ' ' . $_SESSION['nazwisko'], ENT_QUOTES, 'UTF-8'); ?>
+                            </span>
 
-                                <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                            <!-- Avatar xq-->
+                            <img id="userAvatar"
+                                 class="img-profile rounded-circle"
+                                 src="img/undraw_profile.svg"
+                                 alt="Profil"
+                                 style="cursor:pointer">
+                          </a>
+
+                          <!-- Dropdown - User Information xq-->
+                          <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                               aria-labelledby="userDropdown">
+                            <a class="dropdown-item" href="#">
+                              <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                              Profil
                             </a>
-                            <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profil
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Wyloguj się
-                                </a>
-                            </div>
+                            <div class="dropdown-divider"></div>
+                            <!-- Pozycja Wyloguj z potwierdzeniem xq-->
+                            <a class="dropdown-item" id="logoutLink" href="../logout.php">
+                              <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                              Wyloguj się
+                            </a>
+                          </div>
                         </li>
-
                     </ul>
 
                 </nav>
@@ -386,6 +310,62 @@ try {
 
     <!-- Core plugin JavaScript-->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+      <!-- (NOWE) SweetAlert2 skrypt xq-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Potwierdzenie wylogowania (avatar + link w dropdownie) xq-->
+    <script>
+      (function () {
+        // Funkcja 
+        function niceLogoutDialog(onConfirm) {
+          if (window.Swal && typeof Swal.fire === 'function') {
+            Swal.fire({
+              title: 'Wylogować się?',
+              text: 'Zostaniesz wylogowany/a z panelu.',
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonText: 'Wyloguj',
+              cancelButtonText: 'Anuluj',
+              reverseButtons: true,
+              focusCancel: true,
+              customClass: {
+                confirmButton: 'btn btn-danger',
+                cancelButton: 'btn btn-secondary'
+              },
+              buttonsStyling: false
+            }).then(function (result) {
+              if (result.isConfirmed) onConfirm();
+            });
+          } else {
+            if (confirm('Czy na pewno chcesz się wylogować?')) onConfirm();
+          }
+        }
+
+        // Klik w avatar: zatrzymaj dropdown i pokaż dialog 
+        var avatar = document.getElementById('userAvatar');
+        if (avatar) {
+          avatar.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            niceLogoutDialog(function () {
+              window.location.href = '../logout.php';
+            });
+          }, true);
+        }
+
+        // Klik w „Wyloguj się” w menu 
+        var logout = document.getElementById('logoutLink');
+        if (logout) {
+          logout.addEventListener('click', function (e) {
+            e.preventDefault();
+            niceLogoutDialog(function () {
+              window.location.href = '../logout.php';
+            });
+          });
+        }
+      })();
+    </script>
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>

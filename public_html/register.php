@@ -39,7 +39,7 @@
                 <div class="card shadow-lg">
                     <div class="card-body p-4">
                         <h3 class="card-title text-center mb-4">Rejestracja</h3>
-                        <form action="register-handler.php" method="post">
+                        <form action="/register-handler.php" method="post">
                             <div class="form-floating mb-3">
                                 <input type="text" class="form-control" id="firstName" name="firstName"
                                        placeholder="Imię" required>

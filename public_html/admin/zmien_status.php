@@ -3,7 +3,7 @@ session_start();
 require_once '../includes/db.php';
 
 // Wczytanie prefixu z configu
-$installerConfig = include '../install/config/config.php';
+$installerConfig = include '../includes/config.php';
 $prefix = $installerConfig['prefix'];
 
 if (!isset($_SESSION['user_id']) || $_SESSION['rola_id'] != 2) {
