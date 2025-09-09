@@ -10,7 +10,7 @@ $prefix = $config['prefix'];
 require_once __DIR__ . '/../includes/db.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // 👉 pobieramy wyłącznie z POST (tytuł to nie plik)
+   
     $tytul        = trim($_POST['tytul'] ?? '');
     $streszczenie = trim($_POST['streszczenie'] ?? '');
     $uczestnik_id = (int)$_SESSION['user_id'];
@@ -19,9 +19,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         die('Brak wymaganych danych (tytuł / streszczenie).');
     }
 
-    $plik_nazwa = null; // dopuszczamy brak pliku (ustaw kolumnę plik na NULL w DB)
+    $plik_nazwa = null; 
 
-    // ✅ obsługa opcjonalnego uploadu PDF
     if (!empty($_FILES['plik']['name'])) {
         if (!isset($_FILES['plik']['error']) || $_FILES['plik']['error'] !== UPLOAD_ERR_OK) {
             die('Błąd przesyłania pliku.');
@@ -39,7 +38,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        // unikalna, bezpieczna nazwa
         $baseName   = preg_replace('/[^a-zA-Z0-9._-]/', '_', basename($_FILES['plik']['name']));
         $plik_nazwa = time() . '_' . $baseName;
         $fullPath   = $uploadDir . DIRECTORY_SEPARATOR . $plik_nazwa;
@@ -49,7 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // ✅ zapis do bazy
     $sql = "INSERT INTO `{$prefix}referaty`
             (tytul, streszczenie, plik, uczestnik_id, data_zgloszenia, status)
             VALUES (?, ?, ?, ?, NOW(), 'oczekujący')";
@@ -57,7 +54,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$tytul, $streszczenie, $plik_nazwa, $uczestnik_id]);
     } catch (PDOException $e) {
-        // jeśli insert padnie, usuń zapisany plik, żeby nie porzucać śmieci
         if (!empty($plik_nazwa)) {
             @unlink(__DIR__ . '/../pliki_referatow/' . $plik_nazwa);
         }
