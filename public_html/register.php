@@ -91,11 +91,19 @@
                                        placeholder="Data urodzenia" required>
                                 <label for="birthDate">Data urodzenia *</label>
                             </div>
-                            <div class="form-floating mb-4">
-                                <input type="password" class="form-control" id="password" name="password"
-                                       placeholder="Hasło" required>
+                           <div class="form-floating mb-4">
+                            <input type="password"
+                                class="form-control"
+                                id="password"
+                                name="password"
+                                placeholder="Hasło"
+                                required
+                                autocomplete="new-password"
+                                pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])\S{8,72}"
+                                title="Min. 8 znaków, bez spacji, z dużą i małą literą, cyfrą i znakiem specjalnym.">
                                 <label for="password">Hasło *</label>
                             </div>
+
                             <button class="btn btn-primary w-100" type="submit">Zarejestruj się</button>
                         </form>
                     </div>

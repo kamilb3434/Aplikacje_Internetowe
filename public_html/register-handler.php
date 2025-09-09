@@ -40,8 +40,17 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 }
 
 // 🛡️ Hasło min. 8 znaków
-if (strlen($haslo) < 8) {
-    redirect_with_error("slabe_haslo");
+// 🛡️ Zasady hasła: 8–72 znaków, min. 1 duża, 1 mała, 1 cyfra, 1 znak spec., bez spacji
+$haslo_ok =
+    strlen($haslo) >= 8 && strlen($haslo) <= 72 &&
+    preg_match('/[A-Z]/', $haslo) &&        // min. 1 duża litera
+    preg_match('/[a-z]/', $haslo) &&        // min. 1 mała litera
+    preg_match('/\d/',    $haslo) &&        // min. 1 cyfra
+    preg_match('/[^A-Za-z0-9]/', $haslo) && // min. 1 znak specjalny
+    !preg_match('/\s/',   $haslo);          // bez spacji/whitespaces
+
+if (!$haslo_ok) {
+    redirect_with_error("haslo_slabe");
 }
 
 // 🛡️ Długość pól
