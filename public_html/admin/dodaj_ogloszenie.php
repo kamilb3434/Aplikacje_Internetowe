@@ -12,10 +12,11 @@ $prefix = $config['prefix'];
 
 $blad = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $tytul = trim($_POST['tytul'] ?? '');
-    $tresc = trim($_POST['tresc'] ?? '');
+    $tytul    = trim($_POST['tytul'] ?? '');
+    $tresc    = trim($_POST['tresc'] ?? '');
     $autor_id = (int)$_SESSION['user_id'];
-    $plik_nazwa = null;
+    // UWAGA: jeśli kolumna `plik` w DB jest NOT NULL, trzymaj pusty string gdy brak pliku:
+    $plik_nazwa = '';
 
     if ($tytul === '' || $tresc === '') {
         $blad = 'Uzupełnij tytuł i treść.';
@@ -24,10 +25,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Upload (opcjonalny)
     if (!$blad && !empty($_FILES['plik']['name'])) {
         if ($_FILES['plik']['error'] !== UPLOAD_ERR_OK) {
-            $blad = 'Błąd uploadu (kod '.$_FILES['plik']['error'].').';
+            $blad = 'Błąd uploadu (kod ' . $_FILES['plik']['error'] . ').';
         } else {
             $ext = strtolower(pathinfo($_FILES['plik']['name'], PATHINFO_EXTENSION));
-            if (!in_array($ext, ['pdf','html'], true)) {
+            if (!in_array($ext, ['pdf', 'html', 'htm'], true)) {
                 $blad = 'Dozwolone są tylko pliki PDF lub HTML.';
             } else {
                 $uploadDir = __DIR__ . '/../uploads/ogloszenia';
@@ -65,7 +66,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 </head>
 <body class="p-4">
-    <!-- Prosty topbar z linkiem Wyloguj się -->
     <nav class="navbar navbar-light bg-light mb-4">
         <a class="navbar-brand" href="ogloszenia.php">Panel administratora — Ogłoszenia</a>
         <a class="btn btn-outline-danger" href="../logout.php">Wyloguj się</a>
@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <h2 class="mb-3">Dodaj ogłoszenie</h2>
 
     <?php if ($blad): ?>
-        <div class="alert alert-danger"><?= htmlspecialchars($blad) ?></div>
+        <div class="alert alert-danger"><?= htmlspecialchars($blad, ENT_QUOTES, 'UTF-8') ?></div>
     <?php endif; ?>
 
     <form action="" method="post" enctype="multipart/form-data">
@@ -89,8 +89,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <div class="form-group mb-4">
-            <label for="plik">Plik (PDF lub HTML – opcjonalnie):</label>
-            <input type="file" id="plik" name="plik" class="form-control" accept=".pdf,.html,application/pdf,text/html">
+            <label for="plik">Plik (PDF/HTML – opcjonalnie):</label>
+            <input type="file" id="plik" name="plik" class="form-control"
+                   accept=".pdf,.html,.htm,application/pdf,text/html">
         </div>
 
         <button type="submit" class="btn btn-primary">Dodaj ogłoszenie</button>
