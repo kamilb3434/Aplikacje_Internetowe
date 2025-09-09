@@ -1,127 +1,78 @@
-# Tytuł projektu
-Serwis konferencyjny
+# Serwis konferencyjny
+
+Serwis konferencyjny to internetowa platforma stworzona z myślą o wspieraniu organizacji konferencji naukowych.  
+Umożliwia kompleksowe zarządzanie wydarzeniem — od rejestracji uczestników, przez zgłaszanie referatów, aż po publikację ogłoszeń i materiałów konferencyjnych.
+
+---
 
 ## Wymagania systemowe
-* wersja apache'a
-* wersja PHP'a
-* wersja MySQL
+- **Serwer WWW:** Apache 2.4 lub nowszy  
+- **PHP:** 7.4 lub nowszy (zalecane PHP 8.x)  
+- **Baza danych:** MySQL 5.7 lub nowsza (alternatywnie MariaDB 10.x)  
+
+---
 
 ## Instalacja
-Instrukcja instalacji projektu, w tym do jakich plików i do jakich katalogów należy ustawić odpowiednie uprawnienia
-🔧 Instrukcja uruchomienia i przetestowania instalatora aplikacji PHP
-Poniżej znajdziesz krok po kroku, co zrobić po wrzuceniu plików na serwer, żeby odpalić Twój instalator i zainstalować aplikację poprawnie.
+Po pobraniu i umieszczeniu aplikacji na serwerze WWW z obsługą PHP oraz MySQL (np. Apache w środowisku Linux), instalacja odbywa się za pomocą wbudowanego instalatora.
 
-✅ Wymagania wstępne:
-Serwer z PHP (>=7.4), MySQL/MariaDB, Apache lub inny webserwer (np. XAMPP, LAMP, itp.)
+### 1. Uruchomienie instalatora
+W przeglądarce internetowej należy wpisać adres: http://localhost
 
-Dostęp do phpMyAdmin lub konto z uprawnieniami do tworzenia baz danych
+Spowoduje to wyświetlenie formularza instalacyjnego aplikacji.
 
-Folder projektu wrzucony do htdocs/ (lokalnie) lub katalogu publicznego na serwerze
+### 2. Konfiguracja bazy danych
+W pierwszym kroku należy podać dane dostępowe do bazy danych:
+- **Host bazy danych** –  `localhost`,  
+- **Użytkownik bazy danych** – np. `root`,  
+- **Hasło** – pole jest dostępne w formularzu, jednak w standardowej konfiguracji nie wymaga uzupełniania.  
 
-🪛 Krok 1: Ustaw odpowiednie uprawnienia do plików
-Upewnij się, że:
+  > W projekcie konto `root` w MySQL pozostało bez hasła, ponieważ w środowisku XAMPP domyślnie nie ma możliwości jego ustawienia bez dodatkowej konfiguracji. Próba nadania hasła powodowała błędy w aplikacji (problemy z połączeniem do bazy).  
+  > W związku z tym pozostawiono konto `root` bez hasła, aby aplikacja działała poprawnie w środowisku testowym.
 
-folder install/config/ istnieje i ma prawo zapisu
+- **Nazwa bazy danych** – np. `serwiskonf`,  
+- **Prefiks tabel** – opcjonalnie można ustawić prefiks, np. `konf_`.  
 
+Po uzupełnieniu danych klikamy przycisk **Przejdź dalej**.
 
-chmod -R 775 install/config/
-jeśli includes/config.php nie istnieje, to PHP będzie go tworzył – czyli folder includes/ też musi mieć prawo zapisu:
+### 3. Dane aplikacji i administratora
+W kolejnym kroku uzupełniamy dane dotyczące aplikacji:
+- Nazwa aplikacji – np. `serwiskonf`,  
+- Adres serwisu – np. `localhost`,  
+- Wersja aplikacji – np. `1`,  
+- Nazwa firmy – np. `xxxx`,  
+- Numer telefonu kontaktowego – np. `123456789`.  
 
+Następnie definiujemy dane administratora systemu:
+- Adres e-mail administratora – np. `admin123@wp.pl`,  
+- Hasło oraz jego potwierdzenie.  
 
-chmod -R 775 includes/
-🧪 Krok 2: Uruchom instalator
-Przejdź do przeglądarki i wpisz:
+Po wprowadzeniu wszystkich informacji wybieramy przycisk **Zakończ instalację**.
 
+### 4. Zakończenie instalacji
+Jeśli wszystkie dane zostały poprawnie uzupełnione, pojawi się komunikat:
+**„Instalacja zakończona!”**
 
-http://localhost/nazwa_aplikacji/install/install.php
-lub na serwerze:
+Klikając w odnośnik **Przejdź do aplikacji**, użytkownik zostaje przeniesiony na stronę główną systemu.
 
+- Aby uzyskać dostęp do panelu administracyjnego, należy kliknąć przycisk **Zaloguj się** i wprowadzić dane administratora utworzone w trakcie instalacji (adres e-mail i hasło).  
+- Po poprawnym zalogowaniu użytkownik trafia na **ekran administratora**.  
+- Alternatywnie nowi użytkownicy mogą skorzystać z opcji **Rejestracja**, aby utworzyć własne konto i zalogować się do systemu jako zwykły użytkownik.  
 
-https://twojadomena.pl/install/install.php
-Instalator sam poprowadzi Cię krok po kroku:
+---
 
-📋 Przebieg instalacji
-🔹 Krok 1: Formularz danych bazy
-Podajesz:
+## Autorzy
 
-host (np. localhost)
+- **Patrycja Calińska**  
+  *nr albumu: 414771*  
+  *calinska*  
 
-nazwę bazy (np. 2026_baranokk)
+- **Kamil Baranowski**  
+  *nr albumu: 405785*  
+  *baranokk*  
 
-użytkownika i hasło do MySQL
-
-prefix tabel (np. serwis_)
-
-Po zatwierdzeniu te dane zapisują się do config.php.
-
-🔹 Krok 2–4: Tworzenie bazy i struktur
-Tworzona jest baza (jeśli nie istnieje)
-
-Wczytywane są zapytania z pliku sql/sql.php (tworzenie tabel)
-
-Następnie wykonywane są inserty startowe z sql/insert.php
-
-🔹 Krok 5: Dane aplikacji i administratora
-Wypełniasz:
-
-nazwa aplikacji, URL, wersja, firma, telefon
-
-login (email) i hasło administratora
-
-🔹 Krok 6: Kończenie instalacji
-Tworzone jest konto administratora (rola_id = 2)
-
-Dane aplikacji są dopisywane do config.php
-
-Pojawi się komunikat:
-
-
-✅ Instalacja zakończona!
-[ Przejdź do aplikacji ]
-🔒 Krok 3: Zabezpieczenie aplikacji po instalacji
-Po zakończeniu instalacji:
-
-Usuń lub zablokuj dostęp do install/:
-
-
-rm -rf install/
-Albo przynajmniej wrzuć do install/ plik .htaccess z:
-
-ss
-
-Deny from all
-Sprawdź czy config.php zawiera dane połączenia i dane aplikacji.
-
-✅ Testowanie
-Wejdź na stronę logowania (login.php)
-
-Zaloguj się danymi administratora
-
-Upewnij się, że dashboard działa i dane z bazy się ładują
-
-Przetestuj rejestrację zwykłego użytkownika, dodawanie referatów, ogłoszeń itd.
-
-Jak coś nie działa – sprawdzaj:
-
-config.php – czy są dobre dane?
-
-php_error.log – czy nie ma błędów składni?
-
-uprawnienia plików – czy może PHP nie może zapisywać?
-
-
-
-
-## Autor
-
-* **Patrycja Calińska** 
-* *nr  album: 414771*
-* *calinska*
-
-* **Kamil Baranowski** 
-* *nr  album: 405785*
-* *baranokk*
+---
 
 ## Wykorzystane zewnętrzne biblioteki
+- [Bootstrap 5.3](https://getbootstrap.com/) – framework CSS/JS do stylizacji i komponentów interfejsu.  
 
-* bootstrap
+---

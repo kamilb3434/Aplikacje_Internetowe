@@ -73,6 +73,7 @@ try {
 
         .sticky-footer {
             margin-top: auto;
+        
         }
     </style>
 

@@ -4,5 +4,5 @@ return [
 'dbname' => 'serwiskonf',
 'user' => 'root',
 'pass' => '',
-'prefix' => 'bomba_'
+'prefix' => 'konf_'
 ];

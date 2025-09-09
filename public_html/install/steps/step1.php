@@ -29,7 +29,7 @@
 
         <div class="mb-3">
             <label for="db_pass" class="form-label">Hasło</label>
-            <input type="password" class="form-control" id="db_pass" name="db_pass">
+            <input type="password" class="form-control" id="db_pass" name="db_pass" value="" placeholder="(brak)" readonly>
         </div>
 
         <div class="mb-3">
