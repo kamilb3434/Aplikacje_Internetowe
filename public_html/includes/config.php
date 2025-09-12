@@ -1,4 +1,8 @@
 <?php
 return [
-// będzie uzupełnione w kroku 2
+  'host' => '127.0.0.1',
+  'dbname' => 'serwiskonf',
+  'user' => 'root',
+  'pass' => '',
+  'prefix' => 'serwiskonf_'
 ];

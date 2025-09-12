@@ -6,57 +6,76 @@ Umożliwia kompleksowe zarządzanie wydarzeniem — od rejestracji uczestników,
 ---
 
 ## Wymagania systemowe
-- **Serwer WWW:** Apache 2.4 lub nowszy  
-- **PHP:** 7.4 lub nowszy (zalecane PHP 8.x)  
-- **Baza danych:** MySQL 5.7 lub nowsza (alternatywnie MariaDB 10.x)  
+
+- **Serwer WWW:** Apache/2.4.58 (Win64), OpenSSL/3.1.3  
+- **PHP:** 8.2.12 _(zalecane PHP 8.x)_  
+- **Baza danych:** MySQL (libmysql - mysqlnd 8.2.12)  
+- **Rozszerzenia PHP:**  
+  - `mysqli`  
+  - `curl`  
+  - `mbstring`
 
 ---
 
 ## Instalacja
-Po pobraniu i umieszczeniu aplikacji na serwerze WWW z obsługą PHP oraz MySQL (np. Apache w środowisku Linux), instalacja odbywa się za pomocą wbudowanego instalatora.
+
+Po pobraniu i umieszczeniu aplikacji na serwerze WWW z obsługą PHP i MySQL (np. Apache w środowisku Linux lub Windows), instalacja przebiega za pomocą wbudowanego instalatora.
+
+---
 
 ### 1. Uruchomienie instalatora
-W przeglądarce internetowej należy wpisać adres: http://localhost
 
+W przeglądarce internetowej wpisz adres: http://localhost
 Spowoduje to wyświetlenie formularza instalacyjnego aplikacji.
 
 ### 2. Konfiguracja bazy danych
-W pierwszym kroku należy podać dane dostępowe do bazy danych:
-- **Host bazy danych** –  `localhost`,  
-- **Użytkownik bazy danych** – np. `root`,  
-- **Hasło** – pole jest dostępne w formularzu, jednak w standardowej konfiguracji nie wymaga uzupełniania.  
 
-  > W projekcie konto `root` w MySQL pozostało bez hasła, ponieważ w środowisku XAMPP domyślnie nie ma możliwości jego ustawienia bez dodatkowej konfiguracji. Próba nadania hasła powodowała błędy w aplikacji (problemy z połączeniem do bazy).  
-  > W związku z tym pozostawiono konto `root` bez hasła, aby aplikacja działała poprawnie w środowisku testowym.
+W pierwszym kroku podaj dane dostępowe do bazy danych:
 
-- **Nazwa bazy danych** – np. `serwiskonf`,  
-- **Prefiks tabel** – opcjonalnie można ustawić prefiks, np. `konf_`.  
+- **Host bazy danych** – `localhost` 
+- **Nazwa bazy danych** – np. `serwiskonf`  
+- **Użytkownik bazy** –  `root`  
+- **Hasło bazy** – w przypadku instalacji lokalnej (localhost) **pozostaw puste**  
+- **Prefiks tabel** – np. `konf_`  
 
-Po uzupełnieniu danych klikamy przycisk **Przejdź dalej**.
+Po uzupełnieniu danych kliknij przycisk **Dalej**.
+
+Kolejno wykonaj następujące kroki:
+
+1. Kliknij odnośnik **„Kliknij tutaj”**, aby rozpocząć tworzenie bazy danych.  
+2. Po zakończeniu procesu ponownie wybierz **„Kliknij tutaj”**, aby przejść dalej.  
+3. Wyświetli się komunikat o dodawaniu danych startowych – ponownie kliknij **„Kliknij tutaj”**, aby zakończyć ten etap.  
+
+---
 
 ### 3. Dane aplikacji i administratora
-W kolejnym kroku uzupełniamy dane dotyczące aplikacji:
-- Nazwa aplikacji – np. `serwiskonf`,  
-- Adres serwisu – np. `localhost`,  
-- Wersja aplikacji – np. `1`,  
-- Nazwa firmy – np. `xxxx`,  
-- Numer telefonu kontaktowego – np. `123456789`.  
 
-Następnie definiujemy dane administratora systemu:
-- Adres e-mail administratora – np. `admin123@wp.pl`,  
-- Hasło oraz jego potwierdzenie.  
+W kolejnym kroku uzupełnij dane dotyczące aplikacji:
 
-Po wprowadzeniu wszystkich informacji wybieramy przycisk **Zakończ instalację**.
+- **Adres bazowy** – `http://localhost/` 
+- **Nazwa aplikacji** – np. `Serwis konferencyjny`   
+- **Wersja aplikacji** – np. `beta`  
+- **Brand** – np. `Przykładowa Firma`  
+- **Numer telefonu** – np. `123456789`  
+
+Następnie zdefiniuj dane administratora systemu:
+
+- **Adres e-mail administratora** – np. `admin123@wp.pl`  
+- **Hasło** oraz jego **potwierdzenie**  
+
+Po wprowadzeniu wszystkich informacji kliknij przycisk **Zakończ instalację**.
 
 ### 4. Zakończenie instalacji
-Jeśli wszystkie dane zostały poprawnie uzupełnione, pojawi się komunikat:
+
+Po pomyślnym zakończeniu instalacji pojawi się komunikat:
+
 **„Instalacja zakończona!”**
 
-Klikając w odnośnik **Przejdź do aplikacji**, użytkownik zostaje przeniesiony na stronę główną systemu.
+Klikając w odnośnik **Przejdź do aplikacji**, zostaniesz przeniesiony na stronę główną systemu.
 
-- Aby uzyskać dostęp do panelu administracyjnego, należy kliknąć przycisk **Zaloguj się** i wprowadzić dane administratora utworzone w trakcie instalacji (adres e-mail i hasło).  
-- Po poprawnym zalogowaniu użytkownik trafia na **ekran administratora**.  
-- Alternatywnie nowi użytkownicy mogą skorzystać z opcji **Rejestracja**, aby utworzyć własne konto i zalogować się do systemu jako zwykły użytkownik.  
+- Aby uzyskać dostęp do panelu administracyjnego, kliknij przycisk **Zaloguj się** i wprowadź dane administratora utworzone w trakcie instalacji.  
+- Po poprawnym zalogowaniu trafisz na **ekran administratora**.  
+- Nowi użytkownicy mogą skorzystać z opcji **Rejestracja**, aby założyć własne konto i korzystać z systemu jako zwykli użytkownicy.
 
 ---
 

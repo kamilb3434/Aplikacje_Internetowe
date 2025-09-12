@@ -1,6 +1,6 @@
 <?php
 return [
-  'base_url' => 'http://localhost',
+  'base_url' => 'http://localhost/',
   'nazwa_aplikacji' => 'Serwis Konferencyjny',
   'wersja' => 'beta',
   'brand' => 'SerwisKonferencyjnyIT',
