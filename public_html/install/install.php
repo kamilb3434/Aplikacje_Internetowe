@@ -19,10 +19,10 @@ $configWritable = is_writable($configPath);
 // Błędy/info z sesji
 $err  = $_SESSION['installer_error']  ?? null;
 $old  = $_SESSION['installer_old']    ?? [
-    'db_host' => '127.0.0.1',
-    'db_name' => 'serwiskonf',
+    'db_host' => 'localhost',
+    'db_name' => ' ',
     'db_user' => 'root',
-    'prefix'  => 'serwiskonf_',
+    'prefix'  => ' ',
 ];
 
 // po odczycie wyczyść (żeby nie wisiało)
