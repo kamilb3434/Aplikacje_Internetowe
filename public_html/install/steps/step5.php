@@ -1,74 +1,54 @@
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8">
-    <title>Krok 5 – Konfiguracja aplikacji</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="d-flex flex-column min-vh-100">
+<?php
+// public_html/install/steps/step5.php
+?>
+<div class="card">
+  <div class="card-body">
+    <h2 class="h4 mb-3">Krok 5 — dane aplikacji i konto administratora</h2>
 
-<nav class="navbar navbar-dark bg-dark">
-    <div class="container">
-        <span class="navbar-brand mb-0 h1">Instalator aplikacji</span>
-    </div>
-</nav>
-
-<main class="container mt-5 flex-grow-1">
-    <h2 class="mb-4">Krok 5: Dane aplikacji i administratora</h2>
-
-    <form method="post" action="install.php?step=6">
-        <div class="mb-3">
-            <label for="nazwa_aplikacji" class="form-label">Nazwa aplikacji</label>
-            <input type="text" class="form-control" id="nazwa_aplikacji" name="nazwa_aplikacji" required>
+    <form action="install-handler.php?step=6" method="post" autocomplete="off">
+      <div class="row">
+        <div class="col-md-6">
+          <h5 class="mb-3">Aplikacja</h5>
+          <div class="mb-3">
+            <label class="form-label">Adres bazowy (base_url)</label>
+            <input name="base_url" type="text" class="form-control" placeholder="http://localhost/">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Nazwa aplikacji</label>
+            <input name="nazwa_aplikacji" type="text" class="form-control" value="Serwis Konferencyjny">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Wersja</label>
+            <input name="wersja" type="text" class="form-control" value="beta">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Brand</label>
+            <input name="brand" type="text" class="form-control" value="SerwisKonferencyjnyIT">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Telefon</label>
+            <input name="phone" type="text" class="form-control" value="(+48) 000 000 000">
+          </div>
         </div>
 
-        <div class="mb-3">
-            <label for="base_url" class="form-label">Adres serwisu (URL)</label>
-            <input type="text" class="form-control" id="base_url" name="base_url" required>
+        <div class="col-md-6">
+          <h5 class="mb-3">Konto administratora</h5>
+          <div class="mb-3">
+            <label class="form-label">Login (e-mail)</label>
+            <input name="admin_login" type="email" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Hasło</label>
+            <input name="passwd" type="password" class="form-control" required minlength="8">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Powtórz hasło</label>
+            <input name="passwd2" type="password" class="form-control" required minlength="8">
+          </div>
         </div>
+      </div>
 
-        <div class="mb-3">
-            <label for="wersja" class="form-label">Wersja aplikacji</label>
-            <input type="text" class="form-control" id="wersja" name="wersja" required>
-        </div>
-
-        <div class="mb-3">
-            <label for="brand" class="form-label">Nazwa firmy</label>
-            <input type="text" class="form-control" id="brand" name="brand" required>
-        </div>
-
-        <div class="mb-3">
-            <label for="phone" class="form-label">Telefon kontaktowy</label>
-            <input type="text" class="form-control" id="phone" name="phone" required>
-        </div>
-
-        <hr class="my-4">
-
-        <h4>Dane administratora</h4>
-
-        <div class="mb-3">
-            <label for="admin_login" class="form-label">Email administratora</label>
-            <input type="email" class="form-control" id="admin_login" name="admin_login" required>
-        </div>
-
-        <div class="mb-3">
-            <label for="passwd" class="form-label">Hasło</label>
-            <input type="password" class="form-control" id="passwd" name="passwd" required>
-        </div>
-
-        <div class="mb-3">
-            <label for="passwd2" class="form-label">Powtórz hasło</label>
-            <input type="password" class="form-control" id="passwd2" name="passwd2" required>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Zakończ instalację</button>
+      <button class="btn btn-primary" type="submit">Zakończ instalację</button>
     </form>
-</main>
-
-<footer class="bg-dark text-white text-center py-3 mt-auto">
-    <div class="container">&copy; Instalator aplikacji 2025</div>
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+  </div>
+</div>
